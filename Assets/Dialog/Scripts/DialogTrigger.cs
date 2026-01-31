@@ -40,7 +40,7 @@ public class DialogTrigger : MonoBehaviour
 
         if (interact.action.WasPressedThisFrame())
         {
-            Debug.Log(inkJSON != null ? inkJSON.text : "inkJSON is null");
+            DialogManager.GetInstance().EnterDialogMode(inkJSON);
         }
     }
 
