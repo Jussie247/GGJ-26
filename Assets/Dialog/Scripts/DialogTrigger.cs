@@ -1,16 +1,58 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class Dialogtrigger : MonoBehaviour
+public class DialogTrigger : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [Header("Visual Cue")]
+    [SerializeField] private GameObject visualCue;
+
+    [Header("Ink JSON")]
+    [SerializeField] private TextAsset inkJSON;
+
+    [Header("Input")]
+    public InputActionReference interact;   // im Inspector die Interact-Action zuweisen
+
+    private bool playerInRange;
+
+    private void Awake()
     {
-        
+        playerInRange = false;
+        if (visualCue != null) visualCue.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        if (interact != null) interact.action.Enable();
+    }
+
+    private void OnDisable()
+    {
+        if (interact != null) interact.action.Disable();
+    }
+
+    private void Update()
+    {
+        if (visualCue != null)
+            visualCue.SetActive(playerInRange);
+
+        if (!playerInRange) return;
+        if (interact == null) return;
+
+        if (interact.action.WasPressedThisFrame())
+        {
+            Debug.Log(inkJSON != null ? inkJSON.text : "inkJSON is null");
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.CompareTag("Player"))
+            playerInRange = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+        if (collider.CompareTag("Player"))
+            playerInRange = false;
     }
 }
