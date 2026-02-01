@@ -7,4 +7,9 @@ public class ButtonStart : MonoBehaviour
     {
         SceneManager.LoadScene("Playground");
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
