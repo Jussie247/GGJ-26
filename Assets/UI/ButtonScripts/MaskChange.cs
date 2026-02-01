@@ -13,18 +13,34 @@ public class MaskChange : MonoBehaviour
  
     public void ChangeToDetective()
     {
+        if (DialogManager.GetInstance() != null &&
+         DialogManager.GetInstance().dialogIsPlaying)
+            return;
+
         playerSprite.GetComponent<SpriteRenderer>().sprite = detective;
     }
     public void ChangeToWaiter()
     {
+            if (DialogManager.GetInstance() != null &&
+            DialogManager.GetInstance().dialogIsPlaying)
+                return;
+
         playerSprite.GetComponent<SpriteRenderer>().sprite = waiter;
     }
     public void ChangeToSecurity()
     {
+            if (DialogManager.GetInstance() != null &&
+            DialogManager.GetInstance().dialogIsPlaying)
+                return; 
+
         playerSprite.GetComponent<SpriteRenderer>().sprite = security;
     }
     public void ChangeToLady()
     {
+            if (DialogManager.GetInstance() != null &&
+            DialogManager.GetInstance().dialogIsPlaying)
+                return;
+                
         playerSprite.GetComponent<SpriteRenderer>().sprite = lady;
     }
 }
