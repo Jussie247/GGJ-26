@@ -73,9 +73,9 @@ public class PauseMenu : MonoBehaviour
 
         Time.timeScale = isPaused ? 0f : 1f;
 
-        // Optional: mouse cursor visible during pause
-        Cursor.visible = isPaused;
-        Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked;
+       
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 }
 
