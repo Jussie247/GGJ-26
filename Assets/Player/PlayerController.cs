@@ -12,6 +12,14 @@ public class PlayerController : MonoBehaviour
     {}
     void Update()
     {
+
+        if (DialogManager.GetInstance() != null &&
+        DialogManager.GetInstance().dialogIsPlaying)
+{
+        moveDirection = Vector2.zero;
+        return;
+}
+
         moveDirection = move.action.ReadValue<Vector2>(); 
         transform.Translate(new Vector3(moveDirection.x * moveSpeed * Time.deltaTime, moveDirection.y * moveSpeed * Time.deltaTime, 0));
         if (moveDirection.x < 0 && !isFacingLeft)
