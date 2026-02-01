@@ -25,6 +25,11 @@ public class DialogManager : MonoBehaviour
 
     private bool blockSubmitThisFrame;
 
+    
+    [Header("Re-enter Block")]
+    [SerializeField] private float reenterBlockSeconds = 0.2f;
+    private float blockEnterUntilTime;
+
     private static DialogManager instance;
 
     private void Awake()
@@ -50,7 +55,7 @@ public class DialogManager : MonoBehaviour
         {
             choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
 
-         
+            
             var button = choice.GetComponent<Button>();
             if (button != null)
             {
@@ -59,13 +64,10 @@ public class DialogManager : MonoBehaviour
                 button.navigation = nav;
             }
 
-           
             choice.SetActive(false);
-
             index++;
         }
 
-  
         if (EventSystem.current != null)
             EventSystem.current.SetSelectedGameObject(null);
     }
@@ -91,7 +93,7 @@ public class DialogManager : MonoBehaviour
             return;
         }
 
-        
+       
         if (currentStory != null && currentStory.currentChoices.Count > 0)
             return;
 
@@ -103,6 +105,9 @@ public class DialogManager : MonoBehaviour
 
     public void EnterDialogMode(TextAsset inkJSON)
     {
+       
+        if (Time.unscaledTime < blockEnterUntilTime) return;
+
         if (dialogIsPlaying) return;
 
         if (inkJSON == null)
@@ -116,7 +121,6 @@ public class DialogManager : MonoBehaviour
 
         if (dialogPanel != null) dialogPanel.SetActive(true);
 
-        
         if (EventSystem.current != null)
             EventSystem.current.SetSelectedGameObject(null);
 
@@ -129,10 +133,12 @@ public class DialogManager : MonoBehaviour
     {
         dialogIsPlaying = false;
 
+        
+        blockEnterUntilTime = Time.unscaledTime + reenterBlockSeconds;
+
         if (dialogPanel != null) dialogPanel.SetActive(false);
         if (dialogText != null) dialogText.text = "";
 
-       
         for (int i = 0; i < choices.Length; i++)
             choices[i].SetActive(false);
 
@@ -175,7 +181,6 @@ public class DialogManager : MonoBehaviour
             choices[i].SetActive(false);
         }
 
-   
         if (EventSystem.current != null)
             EventSystem.current.SetSelectedGameObject(null);
     }
@@ -191,4 +196,5 @@ public class DialogManager : MonoBehaviour
 
         ContinueStory();
     }
+
 }
